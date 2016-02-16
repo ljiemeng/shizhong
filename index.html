@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<style>
+    .clock{
+        width: 200px;
+        height: 200px;
+        background:radial-gradient(at 50% 50%,#888888 15%,#ffffff);
+        border: 4px solid #040605;
+        box-shadow: 0 0 5px ;
+        border-radius: 50%;
+        margin:50px auto;
+        position: relative;
+        background: url(./images/clock_03.png) no-repeat center;
+        background-size:230px 230px;
+    }
+    .o{
+        width: 8px;
+        height: 8px;
+        background-color: orange;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        position: absolute;
+        top:50%;left: 50%;
+        margin-left: -5px;
+        margin-top: -5px;
+        z-index: 20;
+    }
+</style>
+
+<script>
+    window.onload=function(){
+        var clock=document.getElementsByClassName("clock")[0];
+        createMark();
+
+        var time=new Date();
+        var h=time.getHours();
+        var m=time.getMinutes();
+        var s=time.getSeconds();
+        var hp=createPointer(40,3,"yellow",30*h-90+(6*m)/12);
+        var mp=createPointer(60,3,"green",6*m-90);
+        var sp=createPointer(90,2,"red",6*s-90);
+
+        setInterval(function(){
+            var time=new Date();
+            var h=time.getHours();
+            var m=time.getMinutes();
+            var s=time.getSeconds();
+            hp.style.transform="translate(100px,"+hp.t+"px) rotate("+(30*h-90+(6*m)/12)+"deg)";
+
+            mp.style.transform="translate(100px,"+mp.t+"px) rotate("+(6*m-90)+"deg)";
+            sp.style.transform="translate(100px,"+sp.t+"px) rotate("+(6*s-90)+"deg)";
+
+
+        },1000)
+
+        function createMark(){
+            for(var i=0;i<60;i++){
+                var w,h,l;
+                if(i%5==0){
+                   w=6;h=6;
+                   l=(200-w)/2;
+                var div= document.createElement("div");
+                div.style.cssText="width:"+w+"px;height:"+h+"px;background:blue;position:absolute;top:0px;left:0;border-radius:50%;;box-shadow:0 0 3px #fff";
+                div.style.transform="translate( "+l+"px,0)  rotate("+i*6+"deg)";
+                div.style.transformOrigin="center 100px";
+                clock.appendChild(div);
+                }else{
+                    w=2;
+                    h=2;
+                    l=(200-w)/2;
+                var div= document.createElement("div");
+                div.style.cssText="width:"+w+"px;height:"+h+"px;background:#eee;position:absolute;top:0px;left:0;border-radius:50%;";
+                div.style.transform="translate( "+l+"px,0)  rotate("+i*6+"deg)";
+                div.style.transformOrigin="center 100px";
+                clock.appendChild(div);
+                }
+                
+            }
+
+        }
+        function createPointer(w,h,c,a){
+            var div=document.createElement("div");
+            var t=(200-h)/2;
+            div.t=t;
+            div.style.cssText="width:"+w+"px;height:"+h+"px;background:"+c+";position:absolute;top:0;left:0;rotate("+a+"deg);transform-translate:(100px,"+t+"px);transform-origin:left center;";
+            clock.appendChild(div);
+            return div;
+
+        }
+    }
+</script>
+
+
+
+<body>
+<div class="clock">
+    <div class="o"></div>
+</div>
+</body>
+</html>
